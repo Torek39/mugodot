@@ -1,11 +1,11 @@
 [gd_scene load_steps=7 format=4 uid="uid://cr2kjodec7ifa"]
 
 [ext_resource type="TileSet" uid="uid://dtxdjjgyoh7yr" path="res://level/grass.tres" id="1_7lnir"]
-[ext_resource type="PackedScene" uid="uid://dynt5tiinbilb" path="res://node_2d.tscn" id="2_5gx2l"]
+[ext_resource type="PackedScene" uid="uid://dynt5tiinbilb" path="res://player.tscn" id="2_5gx2l"]
 [ext_resource type="TileSet" uid="uid://m6i0v0pubm42" path="res://level/props.tres" id="3_qohg2"]
 [ext_resource type="PackedScene" uid="uid://b2rnvo3ytnylu" path="res://door.tscn" id="4_vkbyq"]
 [ext_resource type="PackedScene" uid="uid://dv20g75xtxwav" path="res://stone.tscn" id="5_ktfr2"]
-[ext_resource type="PackedScene" uid="uid://cov01i3u0hi0n" path="res://puzzle_console.tscn" id="6_44x8d"]
+[ext_resource type="PackedScene" uid="uid://7frunctr6s7h" path="res://window.tscn" id="6_44x8d"]
 
 [node name="level" type="Node"]
 
@@ -26,7 +26,8 @@ layer_0/tile_data = PackedInt32Array(-131065, 1441792, 10, -65527, 1703936, 12, 
 [node name="door" parent="." instance=ExtResource("4_vkbyq")]
 position = Vector2(0, 44)
 
-[node name="root" parent="." instance=ExtResource("6_44x8d")]
-
 [node name="Stone" parent="." instance=ExtResource("5_ktfr2")]
-position = Vector2(26, 70)
+position = Vector2(31, 59)
+window_path = NodePath("../window")
+
+[node name="window" parent="." instance=ExtResource("6_44x8d")]

@@ -1,4 +1,4 @@
 extends Node
 
-var door_open: bool = false
-var input_blocked: bool = false
+var input_blocked := false
+var door_open := false

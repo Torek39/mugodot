@@ -209,3 +209,6 @@ offset_left = 7.0
 offset_top = -0.010000229
 offset_right = 15.0
 offset_bottom = 7.99
+theme_override_font_sizes/font_size = 14
+text = "E"
+scroll_v_scroll_speed = 43.0

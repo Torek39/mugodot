@@ -1,4 +1,3 @@
-# player.gd
 extends CharacterBody2D
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -15,21 +14,19 @@ func _ready() -> void:
 	interact_hint.visible = false
 
 func _physics_process(_delta: float) -> void:
-	# если консоль открыта — блокируем движение
 	if Global.input_blocked:
 		return
+
 	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	velocity = direction * SPEED
 	move_and_slide()
 	update_animation(direction)
 
 func _input(event) -> void:
-	# Если глобально заблокирован ввод — игнорируем нажатия
 	if Global.input_blocked:
 		return
 
-	# Обработка взаимодействия
-	if event.is_action_pressed("interact") or (event is InputEventScreenTouch and event.pressed):
+	if event.is_action_pressed("interact"):
 		_handle_interact()
 
 func _handle_interact() -> void:
@@ -55,11 +52,9 @@ func update_animation(direction: Vector2) -> void:
 		new_animation = "run"
 		should_flip_h = direction.x < 0
 
-	if animated_sprite.animation != new_animation or should_flip_h != animated_sprite.flip_h or previous_direction != direction:
+	if animated_sprite.animation != new_animation or should_flip_h != animated_sprite.flip_h:
 		animated_sprite.play(new_animation)
 		animated_sprite.flip_h = should_flip_h
-
-	previous_direction = direction
 
 func _on_interaction_area_entered(area: Area2D) -> void:
 	var target = area.get_parent()
@@ -69,7 +64,7 @@ func _on_interaction_area_entered(area: Area2D) -> void:
 
 func _on_interaction_area_exited(area: Area2D) -> void:
 	var target = area.get_parent()
-	if target:
+	if target:	
 		_interactables.erase(target)
 		_update_interact_hint()
 
@@ -77,6 +72,5 @@ func _update_interact_hint() -> void:
 	interact_hint.visible = _interactables.size() > 0
 
 func current_interactable() -> Node:
-	# очистка невалидных ссылок
 	_interactables = _interactables.filter(func(x): return is_instance_valid(x))
 	return _interactables.back() if _interactables else null
