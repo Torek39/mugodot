@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b37ol2k5sbxih"]
+[gd_scene load_steps=17 format=3 uid="uid://b37ol2k5sbxih"]
 
 [ext_resource type="Texture2D" uid="uid://bhl2abuukrtbs" path="res://Golem.png" id="1_mmnug"]
 
@@ -90,7 +90,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_547jx")
 }],
 "loop": true,
-"name": &"stay",
+"name": &"idle",
 "speed": 6.0
 }]
 
@@ -98,15 +98,24 @@ animations = [{
 radius = 12.0
 height = 54.0
 
-[node name="golem" type="Node2D"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_m6pht"]
+radius = 12.0
+height = 54.0
+
+[node name="Golem" type="Node2D"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_a08m4")
-animation = &"stay"
-frame = 8
-frame_progress = 0.15855615
+animation = &"idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 11)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_mhhok")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 11)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_m6pht")

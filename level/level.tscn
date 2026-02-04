@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=4 uid="uid://cr2kjodec7ifa"]
+[gd_scene load_steps=10 format=4 uid="uid://cr2kjodec7ifa"]
 
 [ext_resource type="TileSet" uid="uid://dtxdjjgyoh7yr" path="res://level/grass.tres" id="1_7lnir"]
 [ext_resource type="PackedScene" uid="uid://dynt5tiinbilb" path="res://player.tscn" id="2_5gx2l"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://b2rnvo3ytnylu" path="res://door.tscn" id="4_vkbyq"]
 [ext_resource type="PackedScene" uid="uid://dv20g75xtxwav" path="res://stone.tscn" id="5_ktfr2"]
 [ext_resource type="PackedScene" uid="uid://7frunctr6s7h" path="res://window.tscn" id="6_44x8d"]
+[ext_resource type="PackedScene" uid="uid://b37ol2k5sbxih" path="res://golem.tscn" id="8_0v1st"]
+[ext_resource type="PackedScene" uid="uid://ceq5lgw3mrax3" path="res://stone_golem.tscn" id="8_6gtgk"]
+[ext_resource type="PackedScene" uid="uid://cxnte1e28pbia" path="res://window_golem.tscn" id="9_6gtgk"]
 
 [node name="level" type="Node"]
 
@@ -31,3 +34,11 @@ position = Vector2(31, 59)
 window_path = NodePath("../window")
 
 [node name="window" parent="." instance=ExtResource("6_44x8d")]
+
+[node name="Golem" parent="." instance=ExtResource("8_0v1st")]
+position = Vector2(-43, -62)
+
+[node name="Stone_golem" parent="." instance=ExtResource("8_6gtgk")]
+position = Vector2(0, -55)
+
+[node name="window_golem" parent="." instance=ExtResource("9_6gtgk")]

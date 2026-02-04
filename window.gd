@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var door_node_path: NodePath = NodePath("door")
+@export var door_node_path: NodePath = NodePath("../door")
 
 @onready var popup := $Window
 @onready var code_edit := popup.get_node_or_null("Camera2D/TextEdit")
@@ -27,7 +27,6 @@ func _ready() -> void:
 	if close_button:
 		close_button.pressed.connect(_on_close_pressed)
 
-	# Корректное подключение сигнала в Godot 4
 	if popup.has_signal("close_requested"):
 		var call = Callable(self, "_on_window_close_requested")
 		if not popup.is_connected("close_requested", call):
@@ -62,6 +61,7 @@ func _on_run_pressed() -> void:
 		code_edit.text += "\n# Дверь не реагирует"
 
 func _check_code(text: String) -> bool:
+	print("Checking code: " + text)
 	for line in text.split("\n"):
 		var s := line.strip_edges().to_lower()
 		if s.begins_with("door_open") and "=" in s:
@@ -71,13 +71,20 @@ func _check_code(text: String) -> bool:
 	return false
 
 func _unlock_door() -> void:
-	Global.door_open = true  # Выставляем флаг двери
+	print("Unlocking door!")
+	Global.door_open = true
 	var level = get_tree().get_current_scene()
 	if not level:
+		print("No level scene found")
 		return
 	var door = level.get_node_or_null(door_node_path)
-	if door and door.has_method("open"):
-		door.open()  # Разблокируем дверь
+	if door:
+		if door.has_method("open"):
+			door.open()
+		else:
+			print("Door has no open() method")
+	else:
+		print("Door not found at path: " + str(door_node_path))
 
 func _find_buttons() -> void:
 	var buttons: Array[Button] = []

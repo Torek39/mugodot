@@ -60,13 +60,13 @@ func _on_interaction_area_entered(area: Area2D) -> void:
 	var target = area.get_parent()
 	if target and target.has_method("interact"):
 		_interactables.append(target)
-		_update_interact_hint()
+	_update_interact_hint()
 
 func _on_interaction_area_exited(area: Area2D) -> void:
 	var target = area.get_parent()
-	if target:	
+	if target:
 		_interactables.erase(target)
-		_update_interact_hint()
+	_update_interact_hint()
 
 func _update_interact_hint() -> void:
 	interact_hint.visible = _interactables.size() > 0

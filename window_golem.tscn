@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxnte1e28pbia"]
+
+[ext_resource type="Script" uid="uid://dgpy83rdx1k16" path="res://window_golem.gd" id="1_urkvr"]
+
+[node name="WindowGolem" type="Node2D"]
+position = Vector2(0, 35)
+script = ExtResource("1_urkvr")
+
+[node name="Window_golem" type="Window" parent="."]
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+size = Vector2i(250, 282)
+
+[node name="Camera2D" type="Camera2D" parent="Window_golem"]
+offset = Vector2(125, 141)
+
+[node name="TextEdit" type="TextEdit" parent="Window_golem/Camera2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 250.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "current_power = 5 //Маловато
+required_power = 100
+if 
+current_power ? required_power : 
+    open_gate()
+else:
+    print(\"Недостаточно сил, 
+смертный!\")"
+
+[node name="Close" type="Button" parent="Window_golem"]
+offset_top = 251.0
+offset_right = 50.0
+offset_bottom = 282.0
+text = "Close"
+
+[node name="Run" type="Button" parent="Window_golem"]
+offset_left = 53.0
+offset_top = 251.0
+offset_right = 92.0
+offset_bottom = 282.0
+text = "Run"
