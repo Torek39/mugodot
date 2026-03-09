@@ -1,112 +1,118 @@
 extends Node2D
-
+# ==========================
+# ЭКСПОРТ
+# ==========================
 @export var door_node_path: NodePath = NodePath("../door")
-
+# ==========================
+# УЗЛЫ
+# ==========================
 @onready var popup := $Window
 @onready var code_edit := popup.get_node_or_null("Camera2D/TextEdit")
-
+# ==========================
+# КОНСТАНТЫ
+# ==========================
 const LOCKED_SIZE := Vector2(640, 360)
-
-var run_button: Button = null
-var close_button: Button = null
-
+# ==========================
+# КНОПКИ
+# ==========================
+var run_button: Button
+var reset_button: Button
+# ==========================
+# ПЕРЕМЕННЫЕ
+# ==========================
+var initial_code: String = ""
+# ==========================
+# ИНИЦИАЛИЗАЦИЯ
+# ==========================
 func _ready() -> void:
-	if popup == null:
-		printerr("window.gd: узел Window не найден")
-		return
+	_setup_popup()
+	_find_buttons()
+	_connect_signals()
+	if code_edit:
+		initial_code = code_edit.text
+	popup.hide()
 
+func _setup_popup() -> void:
 	if popup is Control:
 		popup.size = LOCKED_SIZE
 		popup.min_size = LOCKED_SIZE
 
-	_find_buttons()
-
+func _connect_signals() -> void:
 	if run_button:
 		run_button.pressed.connect(_on_run_pressed)
-
-	if close_button:
-		close_button.pressed.connect(_on_close_pressed)
-
+	if reset_button:
+		reset_button.pressed.connect(_on_reset_pressed)
 	if popup.has_signal("close_requested"):
-		var call = Callable(self, "_on_window_close_requested")
-		if not popup.is_connected("close_requested", call):
-			popup.connect("close_requested", call)
+		popup.close_requested.connect(_on_close_pressed)
 
-	popup.hide()
-
+# ==========================
+# ОТКРЫТИЕ / ЗАКРЫТИЕ / СБРОС
+# ==========================
 func open_window() -> void:
 	Global.input_blocked = true
 	popup.show()
 	if code_edit:
+		code_edit.text = initial_code
+		code_edit.grab_focus()
+
+func _on_reset_pressed() -> void:
+	if code_edit:
+		code_edit.text = initial_code
 		code_edit.grab_focus()
 
 func _on_close_pressed() -> void:
-	_close()
-
-func _on_window_close_requested() -> void:
-	_close()
-
-func _close() -> void:
 	popup.hide()
 	Global.input_blocked = false
 
+# ==========================
+# ПРОВЕРКА КОДА
+# ==========================
 func _on_run_pressed() -> void:
 	if not code_edit:
 		return
-
 	if _check_code(code_edit.text):
 		_unlock_door()
-		_close()
+		_on_close_pressed()
 	else:
 		code_edit.text += "\n# Дверь не реагирует"
 
 func _check_code(text: String) -> bool:
-	print("Checking code: " + text)
 	for line in text.split("\n"):
-		var s := line.strip_edges().to_lower()
-		if s.begins_with("door_open") and "=" in s:
-			var rhs := s.split("=")[1].strip_edges()
-			if rhs == "true":
+		var cleaned := line.strip_edges().to_lower()
+		if cleaned.begins_with("door_open") and "=" in cleaned:
+			var value := cleaned.split("=")[1].strip_edges()
+			if value == "true":
 				return true
 	return false
 
+# ==========================
+# ОТКРЫТИЕ ДВЕРИ
+# ==========================
 func _unlock_door() -> void:
-	print("Unlocking door!")
 	Global.door_open = true
-	var level = get_tree().get_current_scene()
-	if not level:
-		print("No level scene found")
-		return
-	var door = level.get_node_or_null(door_node_path)
-	if door:
-		if door.has_method("open"):
-			door.open()
-		else:
-			print("Door has no open() method")
-	else:
-		print("Door not found at path: " + str(door_node_path))
+	var door = get_tree().current_scene.get_node_or_null(door_node_path)
+	if door and door.has_method("open"):
+		door.open()
 
+# ==========================
+# ПОИСК КНОПОК
+# ==========================
 func _find_buttons() -> void:
 	var buttons: Array[Button] = []
 	_collect_buttons(popup, buttons)
-
-	if buttons.is_empty():
-		printerr("window.gd: кнопки не найдены")
-		return
-
 	for b in buttons:
-		if b.name.to_lower().contains("run"):
+		var name_lower := b.name.to_lower()
+		if "run" in name_lower:
 			run_button = b
-		elif b.name.to_lower().contains("close"):
-			close_button = b
-
-	if run_button == null:
+		elif "reset" in name_lower or "close" in name_lower:
+			reset_button = b
+	# Фоллбэк
+	if not run_button and buttons.size() > 0:
 		run_button = buttons[0]
+	if not reset_button and buttons.size() > 1:
+		reset_button = buttons[1]
 
-	if close_button == null and buttons.size() > 1:
-		close_button = buttons[1]
-
-func _collect_buttons(node: Node, out: Array) -> void:
+func _collect_buttons(node: Node, out: Array[Button]) -> void:
 	for child in node.get_children():
 		if child is Button:
 			out.append(child)

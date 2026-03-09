@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://bc8tq5vdgre0o"]
+
+[ext_resource type="Script" uid="uid://de5iwotr7gbqw" path="res://stone_seals.gd" id="1_sgwvw"]
+[ext_resource type="Texture2D" uid="uid://wlnro3eqritl" path="res://Texture background/TX Props.png" id="2_r4ntp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rq0vd"]
+atlas = ExtResource("2_r4ntp")
+region = Rect2(227, 183, 26.658, 38.205)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cxlo0"]
+atlas = ExtResource("2_r4ntp")
+region = Rect2(259, 182, 26.535, 38.205)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rot5g"]
+size = Vector2(24, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v4nmc"]
+size = Vector2(28, 22)
+
+[node name="stone_seals" type="StaticBody2D"]
+script = ExtResource("1_sgwvw")
+
+[node name="BaseRune" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_rq0vd")
+
+[node name="GlowRune" type="Sprite2D" parent="BaseRune"]
+position = Vector2(0, -1)
+texture = SubResource("AtlasTexture_cxlo0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_rot5g")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 9)
+shape = SubResource("RectangleShape2D_v4nmc")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -6.0
+offset_top = -34.0
+offset_right = 16.0
+offset_bottom = 31.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 22
+text = "룬
+"

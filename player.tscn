@@ -167,23 +167,28 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0e48y"]
-radius = 6.0
+radius = 4.0
+height = 10.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0e48y"]
-size = Vector2(15, 31)
+size = Vector2(20, 32.5)
 
 [node name="player" type="CharacterBody2D"]
+y_sort_enabled = true
 position = Vector2(0, -2)
 script = ExtResource("1_0e48y")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+y_sort_enabled = true
 position = Vector2(0, -14)
 sprite_frames = SubResource("SpriteFrames_wtcfe")
-animation = &"run_down"
+animation = &"idle"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -13)
+y_sort_enabled = true
+position = Vector2(0, -2)
+rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_0e48y")
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -191,9 +196,11 @@ position = Vector2(0, 1.9999981)
 scale = Vector2(0.99999994, 0.99999994)
 
 [node name="InteractionArea" type="Area2D" parent="."]
+y_sort_enabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
-position = Vector2(-0.5, -14.5)
+y_sort_enabled = true
+position = Vector2(0, -13.25)
 shape = SubResource("RectangleShape2D_0e48y")
 
 [node name="InteractHint" type="Label" parent="."]
@@ -201,6 +208,7 @@ offset_right = 40.0
 offset_bottom = 23.0
 
 [node name="[E] TAP BRO" type="TextEdit" parent="InteractHint"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = -1.13

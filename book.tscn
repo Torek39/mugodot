@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://ct8fxi7rky2ii"]
+
+[ext_resource type="Texture2D" uid="uid://biocrgy8j13y5" path="res://Texture background/Book.png" id="1_y0hms"]
+[ext_resource type="Texture2D" uid="uid://blrt0ecih183e" path="res://Texture background/Book_open.png" id="2_fijbg"]
+
+[node name="Book" type="CanvasLayer"]
+
+[node name="ToggleButton" type="TextureButton" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Icon" type="Sprite2D" parent="ToggleButton"]
+position = Vector2(22.562498, 22.562498)
+scale = Vector2(0.04382324, 0.04382324)
+texture = ExtResource("1_y0hms")
+
+[node name="NotificationBadge" type="Label" parent="ToggleButton"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "!"
+
+[node name="BookPanel" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="BookPanel"]
+layout_mode = 0
+offset_left = 87.0
+offset_right = 532.0
+offset_bottom = 360.0
+texture = ExtResource("2_fijbg")

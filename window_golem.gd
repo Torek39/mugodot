@@ -1,140 +1,99 @@
 extends Node2D
-
-@export var golem_node_path: NodePath = NodePath("Golem")
-
+# ==========================
+# ЭКСПОРТ
+# ==========================
+@export var golem_path: NodePath = NodePath("Golem")
+# ==========================
+# УЗЛЫ
+# ==========================
 @onready var popup: Node = $Window_golem
 @onready var code_edit: TextEdit = popup.get_node_or_null("Camera2D/TextEdit") if popup else null
-
-const LOCKED_SIZE := Vector2(640, 360)
-
-var run_button: Button = null
-var close_button: Button = null
-
-
+@onready var run_button: Button = popup.get_node_or_null("Run") if popup else null
+@onready var reset_button: Button = popup.get_node_or_null("Reset") if popup else null  # ← было Close
+# ==========================
+# ПЕРЕМЕННЫЕ
+# ==========================
+var initial_code: String = ""
+# ==========================
+# ИНИЦИАЛИЗАЦИЯ
+# ==========================
 func _ready() -> void:
-	if popup == null:
-		printerr("window_golem.gd: узел Window_golem не найден")
-		return
-
-	if popup is Control:
-		popup.size = LOCKED_SIZE
-		popup.min_size = LOCKED_SIZE
-
-	_find_buttons()
-
-	if run_button:
-		run_button.pressed.connect(Callable(self, "_on_run_pressed"))
-
-	if close_button:
-		close_button.pressed.connect(Callable(self, "_on_close_pressed"))
-
-	if popup.has_signal("close_requested"):
-		var c := Callable(self, "_on_window_close_requested")
-		if not popup.is_connected("close_requested", c):
-			popup.connect("close_requested", c)
-
+	if code_edit:
+		initial_code = code_edit.text
+	_connect_signals()
 	popup.hide()
 
+func _connect_signals() -> void:
+	if run_button:
+		run_button.pressed.connect(_on_run_pressed)
+	if reset_button:
+		reset_button.pressed.connect(_on_reset_pressed)
+	if popup.has_signal("close_requested"):
+		popup.close_requested.connect(_on_close_pressed)
 
+# ==========================
+# ОТКРЫТИЕ / ЗАКРЫТИЕ / СБРОС
+# ==========================
 func open_window() -> void:
 	Global.input_blocked = true
 	popup.show()
 	if code_edit:
+		code_edit.text = initial_code
 		code_edit.grab_focus()
 
+func _on_reset_pressed() -> void:
+	if code_edit:
+		code_edit.text = initial_code
+		code_edit.grab_focus()
 
 func _on_close_pressed() -> void:
-	_close()
-
-
-func _on_window_close_requested() -> void:
-	_close()
-
-
-func _close() -> void:
 	popup.hide()
 	Global.input_blocked = false
 
-
+# ==========================
+# ПРОВЕРКА КОДА
+# ==========================
 func _on_run_pressed() -> void:
 	if not code_edit:
 		return
-
-	var dx := _parse_move_value(code_edit.text)
-
-	if dx != INF:
-		_move_golem(dx)
-		_close()
+	if _check_code(code_edit.text):
+		_unlock_golem()
+		_on_close_pressed()
 	else:
-		code_edit.append_text("\n# Неверный код. Используй: golem_move = -30")
+		code_edit.text += "\n# Что-то не так..."
 
-
-func _parse_move_value(text: String) -> int:
+func _check_code(text: String) -> bool:
+	var current_power: int = -1
+	var required_power: int = -1
+	var has_greater_sign: bool = false
 	for line in text.split("\n"):
-		var s := line.strip_edges()
-		if s == "":
-			continue
+		var s := line.strip_edges().replace(" ", "").to_lower()
+		if s.begins_with("current_power="):
+			var value_str := s.split("=")[1].split("//")[0].strip_edges()
+			if value_str.is_valid_int():
+				current_power = int(value_str)
+		if s.begins_with("required_power="):
+			var value_str := s.split("=")[1].strip_edges()
+			if value_str.is_valid_int():
+				required_power = int(value_str)
+		if "current_power>required_power" in s or "current_power>=required_power" in s:
+			has_greater_sign = true
+	return current_power != -1 and required_power != -1 and has_greater_sign and current_power > required_power
 
-		var sl := s.to_lower()
-
-		if sl.begins_with("golem_move") and "=" in sl:
-			var rhs := sl.split("=")[1].strip_edges()
-
-			if rhs.is_valid_int():
-				return int(rhs)
-
-			if rhs == "true":
-				return -30
-
-	return INF
-
-
-func _move_golem(dx: int) -> void:
-	var level := get_tree().get_current_scene()
-	if not level:
-		printerr("window_golem.gd: текущая сцена не найдена")
+# ==========================
+# ДВИЖЕНИЕ ГОЛЕМА
+# ==========================
+func _unlock_golem() -> void:
+	var golem = get_parent().get_parent().get_node_or_null("Golem")
+	if not golem:
 		return
-
-	var golem: Node = null
-
-	if golem_node_path != NodePath(""):
-		golem = level.get_node_or_null(golem_node_path)
-
-	if golem == null:
-		golem = level.find_node("Golem", true, false)
-
-	if golem == null:
-		golem = level.find_node("golem", true, false)
-
-	if golem and golem.has_method("move_by"):
-		golem.call("move_by", Vector2(dx, 0))
-	else:
-		printerr("window_golem.gd: голем не найден или нет метода move_by()")
-
-
-func _find_buttons() -> void:
-	var buttons: Array[Button] = []
-	_collect_buttons(popup, buttons)
-
-	if buttons.is_empty():
-		printerr("window_golem.gd: кнопки не найдены")
-		return
-
-	for b in buttons:
-		if b.name.to_lower().contains("run"):
-			run_button = b
-		elif b.name.to_lower().contains("close"):
-			close_button = b
-
-	if run_button == null:
-		run_button = buttons[0]
-
-	if close_button == null and buttons.size() > 1:
-		close_button = buttons[1]
-
-
-func _collect_buttons(node: Node, out: Array) -> void:
-	for child in node.get_children():
-		if child is Button:
-			out.append(child)
-		_collect_buttons(child, out)
+	var target_x = golem.position.x - 30
+	var duration = 1.5
+	var start_x = golem.position.x
+	var tween = create_tween()
+	tween.tween_method(
+		func(t: float):
+			golem.global_position.x = lerp(start_x, target_x, t),
+		0.0, 1.0, duration
+	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_callback(func(): golem.get_node("CollisionShape2D").disabled = true)
