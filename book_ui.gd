@@ -8,7 +8,6 @@ extends CanvasLayer
 @onready var prev_button: Button = $BookPanel/PrevButton
 @onready var next_button: Button = $BookPanel/NextButton
 @onready var close_button: Button = $BookPanel/CloseButton
-
 var pages: Array = []
 var current_page: int = 0
 var has_unread: bool = false
@@ -21,7 +20,7 @@ func _ready() -> void:
 	if notification:
 		notification.text = "!"
 		notification.add_theme_font_size_override("font_size", 20)
-		notification.modulate = Color(1, 0, 0)
+		notification.modulate = Color(1.0, 0.213, 0.16, 1.0)
 		notification.visible = false
 	
 	book_icon.pressed.connect(_on_icon_pressed)
@@ -75,3 +74,18 @@ func _update_page() -> void:
 	
 	prev_button.disabled = (current_page == 0)
 	next_button.disabled = (current_page >= pages.size() - 1)
+
+func save_pages(slot: int, config: ConfigFile) -> void:
+	config.set_value("slot_" + str(slot), "book_pages_count", pages.size())
+	for i in range(pages.size()):
+		config.set_value("slot_" + str(slot), "book_page_" + str(i) + "_title", pages[i]["title"])
+		config.set_value("slot_" + str(slot), "book_page_" + str(i) + "_text", pages[i]["text"])
+
+func load_pages(slot: int, config: ConfigFile) -> void:
+	pages.clear()
+	var count = config.get_value("slot_" + str(slot), "book_pages_count", 0)
+	for i in range(count):
+		var title = config.get_value("slot_" + str(slot), "book_page_" + str(i) + "_title", "")
+		var text = config.get_value("slot_" + str(slot), "book_page_" + str(i) + "_text", "")
+		if title != "":
+			pages.append({"title": title, "text": text})

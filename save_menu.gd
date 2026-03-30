@@ -1,28 +1,50 @@
 extends Control
 
+@onready var confirm_dialog: ConfirmationDialog = $ConfirmationDialog
+var pending_slot: int = -1
+
 func _ready():
-	$Panel/VBoxContainer/Slot1.pressed.connect(_on_slot.bind(1))
-	$Panel/VBoxContainer/Slot2.pressed.connect(_on_slot.bind(2))
-	$Panel/VBoxContainer/Slot3.pressed.connect(_on_slot.bind(3))
-	$Panel/VBoxContainer/Slot4.pressed.connect(_on_slot.bind(4))
+	$Panel/VBoxContainer/Slot1.pressed.connect(_on_slot_clicked.bind(1))
+	$Panel/VBoxContainer/Slot2.pressed.connect(_on_slot_clicked.bind(2))
+	$Panel/VBoxContainer/Slot3.pressed.connect(_on_slot_clicked.bind(3))
+	$Panel/VBoxContainer/Slot4.pressed.connect(_on_slot_clicked.bind(4))
 	$Panel/VBoxContainer/BackButton.pressed.connect(_on_back)
+	
+	if not confirm_dialog:
+		confirm_dialog = ConfirmationDialog.new()
+		add_child(confirm_dialog)
+		confirm_dialog.dialog_text = "Перезаписать существующее сохранение?"
+		confirm_dialog.confirmed.connect(_on_save_confirmed)
 	
 	_update_slots()
 
-func _on_slot(slot: int):
+func _on_slot_clicked(slot: int):
 	var save = ConfigFile.new()
 	save.load("user://savegame.cfg")
 	
-	# Сохраняем сцену
+	var scene = save.get_value("slot_" + str(slot), "scene", "")
+	if scene != "":
+		pending_slot = slot
+		confirm_dialog.popup_centered()
+	else:
+		_save_to_slot(slot)
+
+func _on_save_confirmed():
+	if pending_slot != -1:
+		_save_to_slot(pending_slot)
+		pending_slot = -1
+
+func _save_to_slot(slot: int):
+	var save = ConfigFile.new()
+	save.load("user://savegame.cfg")
+	
 	save.set_value("slot_" + str(slot), "scene", get_tree().current_scene.scene_file_path)
 	
-	# Сохраняем позицию игрока
 	var player = _find_player()
 	if player:
 		save.set_value("slot_" + str(slot), "player_x", player.position.x)
 		save.set_value("slot_" + str(slot), "player_y", player.position.y)
 	
-	# Сохраняем флаги головоломок
 	save.set_value("slot_" + str(slot), "door_open", Global.door_open)
 	save.set_value("slot_" + str(slot), "seals_open", Global.seals_open)
 	save.set_value("slot_" + str(slot), "luke_open", Global.luke_open)
@@ -35,12 +57,24 @@ func _on_slot(slot: int):
 	save.set_value("slot_" + str(slot), "scull_opened", Global.scull_opened)
 	save.set_value("slot_" + str(slot), "column_moved", Global.column_moved)
 	save.set_value("slot_" + str(slot), "doorbox_opened", Global.doorbox_opened)
+	save.set_value("slot_" + str(slot), "golem_moved", Global.golem_moved)
+	save.set_value("slot_" + str(slot), "spikes_stopped", Global.spikes_stopped)
+	save.set_value("slot_" + str(slot), "wall_moved", Global.wall_moved)
+	save.set_value("slot_" + str(slot), "poison_dispelled", Global.poison_dispelled)
+	save.set_value("slot_" + str(slot), "barrier_opened", Global.barrier_opened)
+	
+	var book_ui = _find_book_ui()
+	if book_ui and book_ui.has_method("save_pages"):
+		book_ui.save_pages(slot, save)
 	
 	save.save("user://savegame.cfg")
 	_update_slots()
 
 func _find_player() -> Node:
 	return _find_node_by_name(get_tree().current_scene, "player")
+
+func _find_book_ui() -> Node:
+	return _find_node_by_name(get_tree().root, "BookUI")
 
 func _find_node_by_name(node: Node, node_name: String) -> Node:
 	if node.name == node_name:

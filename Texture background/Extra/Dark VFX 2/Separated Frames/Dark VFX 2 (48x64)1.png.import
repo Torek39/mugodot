@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cf3o2v7oggdg1"
-path="res://.godot/imported/TX Shadow.png-5c94de32e9af696891d9007ff03938ba.ctex"
+uid="uid://bvkjvicrb4ejf"
+path="res://.godot/imported/Dark VFX 2 (48x64)1.png-b9cac9450fae6e4b6e208979df9e3e70.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Texture background/TX Shadow.png"
-dest_files=["res://.godot/imported/TX Shadow.png-5c94de32e9af696891d9007ff03938ba.ctex"]
+source_file="res://Texture background/Extra/Dark VFX 2/Separated Frames/Dark VFX 2 (48x64)1.png"
+dest_files=["res://.godot/imported/Dark VFX 2 (48x64)1.png-b9cac9450fae6e4b6e208979df9e3e70.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2l7pd3ju0ehb"
-path="res://.godot/imported/wizzard_m_idle_anim_f1.png-d218952fdba54b14ff4cf00c80cc70be.ctex"
+uid="uid://bs85atgo7owq1"
+path="res://.godot/imported/Dark VFX 1 (40x32)1.png-c66a4e4512e735d833c636e11a94d3c7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://player/frame/wizzard_m_idle_anim_f1.png"
-dest_files=["res://.godot/imported/wizzard_m_idle_anim_f1.png-d218952fdba54b14ff4cf00c80cc70be.ctex"]
+source_file="res://Texture background/Extra/Dark VFX 1/Separeted frames/Dark VFX 1 (40x32)1.png"
+dest_files=["res://.godot/imported/Dark VFX 1 (40x32)1.png-c66a4e4512e735d833c636e11a94d3c7.ctex"]
 
 [params]
 

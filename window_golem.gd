@@ -9,7 +9,7 @@ extends Node2D
 @onready var popup: Node = $Window_golem
 @onready var code_edit: TextEdit = popup.get_node_or_null("Camera2D/TextEdit") if popup else null
 @onready var run_button: Button = popup.get_node_or_null("Run") if popup else null
-@onready var reset_button: Button = popup.get_node_or_null("Reset") if popup else null  # ← было Close
+@onready var reset_button: Button = popup.get_node_or_null("Reset") if popup else null
 # ==========================
 # ПЕРЕМЕННЫЕ
 # ==========================
@@ -84,16 +84,22 @@ func _check_code(text: String) -> bool:
 # ДВИЖЕНИЕ ГОЛЕМА
 # ==========================
 func _unlock_golem() -> void:
+	Global.golem_moved = true
+	
 	var golem = get_parent().get_parent().get_node_or_null("Golem")
 	if not golem:
 		return
+	
 	var target_x = golem.position.x - 30
 	var duration = 1.5
 	var start_x = golem.position.x
+	
 	var tween = create_tween()
 	tween.tween_method(
 		func(t: float):
 			golem.global_position.x = lerp(start_x, target_x, t),
 		0.0, 1.0, duration
 	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_callback(func(): golem.get_node("CollisionShape2D").disabled = true)
+	
+	await tween.finished
+	golem.get_node("CollisionShape2D").disabled = true

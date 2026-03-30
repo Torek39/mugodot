@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djvvf7x5aexig"
-path="res://.godot/imported/TX Shadow Plant.png-c6ccbf25ce7b9e01ba40d39262401079.ctex"
+uid="uid://h6g11h73850c"
+path="res://.godot/imported/Dark VFX 1 (40x32)14.png-d1de24bc12073598452b20336487f252.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Texture background/TX Shadow Plant.png"
-dest_files=["res://.godot/imported/TX Shadow Plant.png-c6ccbf25ce7b9e01ba40d39262401079.ctex"]
+source_file="res://Texture background/Extra/Dark VFX 1/Separeted frames/Dark VFX 1 (40x32)14.png"
+dest_files=["res://.godot/imported/Dark VFX 1 (40x32)14.png-d1de24bc12073598452b20336487f252.ctex"]
 
 [params]
 
