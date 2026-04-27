@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://b138nc0ishoia"]
+
+[ext_resource type="Script" uid="uid://csba3v1o3pfa7" path="res://scripts/sign_doorbox.gd" id="1_1gqlb"]
+[ext_resource type="Texture2D" uid="uid://wlnro3eqritl" path="res://Texture background/TX Props.png" id="2_48i0k"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xojek"]
+radius = 2.0
+height = 18.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rwwm7"]
+radius = 5.0
+height = 22.0
+
+[node name="sign_doorbox" type="StaticBody2D"]
+script = ExtResource("1_1gqlb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(13, 16)
+texture = ExtResource("2_48i0k")
+region_enabled = true
+region_rect = Rect2(98.92798, 159.93124, 27.158691, 32.08699)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(11, 22)
+shape = SubResource("CapsuleShape2D_xojek")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(12, 21)
+shape = SubResource("CapsuleShape2D_rwwm7")

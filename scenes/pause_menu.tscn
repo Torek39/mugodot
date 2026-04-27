@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdcsap6pfj48f"]
+
+[ext_resource type="Script" uid="uid://bx66wi4ebah07" path="res://scripts/pause_menu.gd" id="1_hdmo1"]
+
+[node name="PauseMenu" type="CanvasLayer"]
+script = ExtResource("1_hdmo1")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 640.0
+offset_bottom = 360.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 41.0
+offset_right = 530.0
+offset_bottom = 350.0
+
+[node name="ResumeButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Resume"
+
+[node name="SaveButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Save"
+
+[node name="LoadButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Load"
+
+[node name="SettingsButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+
+[node name="ExitButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Exit"
+
+[node name="ExitConfirm" type="ConfirmationDialog" parent="Panel"]
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+size = Vector2i(384, 106)
+dialog_text = "            Вы точно хотите выйти из игры?
+\"Все не сохранненые данные будут удалены\""

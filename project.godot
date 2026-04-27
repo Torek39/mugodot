@@ -21,8 +21,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Global="*res://Global.gd"
-StateLoader="*res://state_loader.gd"
+Global="*res://scripts/Global.gd"
+StateLoader="*res://scripts/state_loader.gd"
+AudioManager="*res://scenes/audio_manager.tscn"
 
 [display]
 
@@ -73,3 +74,5 @@ interact={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+textures/decals/filter=0
+textures/light_projectors/filter=0

@@ -1,0 +1,67 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm51u284a6ppl"]
+
+[ext_resource type="Script" uid="uid://0ohfbmw7vxbl" path="res://scripts/load_menu.gd" id="1_r6ha6"]
+
+[node name="load_menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r6ha6")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 639.0
+offset_bottom = 362.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 95.0
+offset_top = 18.0
+offset_right = 544.0
+offset_bottom = 412.0
+
+[node name="Slot1" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+text = "Slot 1: Empty
+
+"
+
+[node name="Slot2" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+text = "Slot 2: Empty
+
+"
+
+[node name="Slot3" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+text = "Slot 3: Empty
+
+"
+
+[node name="Slot4" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+text = "Slot 4: Empty
+
+"
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+
+[node name="BackButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+text = "Back"
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+size = Vector2i(313, 100)
+dialog_text = "Хотите удалить данное сохранение?"

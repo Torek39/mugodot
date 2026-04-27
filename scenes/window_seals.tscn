@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=3 uid="uid://043h2qeqnckv"]
+
+[ext_resource type="Script" uid="uid://e6vkscxat4tj" path="res://scripts/window_seals.gd" id="1_ad32b"]
+
+[node name="Window_seals" type="Node2D"]
+position = Vector2(0, 35)
+script = ExtResource("1_ad32b")
+
+[node name="Window" type="Window" parent="."]
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+size = Vector2i(250, 282)
+visible = false
+
+[node name="Camera2D" type="Camera2D" parent="Window"]
+offset = Vector2(125, 141)
+
+[node name="TextEdit" type="TextEdit" parent="Window/Camera2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 250.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "lock_left = True
+lock_right = False
+if lock_left AND lock_right:
+    unlock_door()
+else:
+    print(\"Один из замков не открыт\")"
+
+[node name="Reset" type="Button" parent="Window"]
+offset_top = 251.0
+offset_right = 50.0
+offset_bottom = 282.0
+text = "Reset"
+
+[node name="Run" type="Button" parent="Window"]
+offset_left = 53.0
+offset_top = 251.0
+offset_right = 92.0
+offset_bottom = 282.0
+text = "Run"
+
+[connection signal="close_requested" from="Window" to="." method="_on_window_close_requested"]

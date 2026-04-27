@@ -1,0 +1,53 @@
+[gd_scene load_steps=2 format=3 uid="uid://kky3pppk65v1"]
+
+[ext_resource type="Script" uid="uid://t0y4q0rvcjk2" path="res://scripts/window_spikes.gd" id="1_jgauv"]
+
+[node name="window_spikes" type="Node2D"]
+position = Vector2(0, 35)
+script = ExtResource("1_jgauv")
+
+[node name="Window" type="Window" parent="."]
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+size = Vector2i(250, 282)
+visible = false
+
+[node name="Camera2D" type="Camera2D" parent="Window"]
+offset = Vector2(125, 141)
+
+[node name="TextEdit" type="TextEdit" parent="Window/Camera2D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 250.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "spikes_active = True
+danger_level = 0
+
+while spikes_active:
+    hit_player()
+    danger_level += 1
+    if danger_level >= 5:
+        spikes_active = ?
+        ?"
+
+[node name="Reset" type="Button" parent="Window"]
+offset_top = 251.0
+offset_right = 50.0
+offset_bottom = 282.0
+text = "Reset"
+
+[node name="Run" type="Button" parent="Window"]
+offset_left = 53.0
+offset_top = 251.0
+offset_right = 92.0
+offset_bottom = 282.0
+text = "Run"
+
+[connection signal="close_requested" from="Window" to="." method="_on_window_close_requested"]

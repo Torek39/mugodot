@@ -1,0 +1,67 @@
+[gd_scene load_steps=12 format=3 uid="uid://bqav2bs4wmf4x"]
+
+[ext_resource type="Texture2D" uid="uid://b04b5vfxvsrnx" path="res://spike_0.png" id="1_13jd2"]
+[ext_resource type="Texture2D" uid="uid://hrrs27f53eki" path="res://spike_1.png" id="2_p45v3"]
+[ext_resource type="Texture2D" uid="uid://goh3qli55mox" path="res://spike_2.png" id="3_x5qbj"]
+[ext_resource type="Texture2D" uid="uid://cb5jdf6cx78rr" path="res://spike_3.png" id="4_jv4b2"]
+[ext_resource type="Texture2D" uid="uid://dbovjygemagrr" path="res://spike_4.png" id="5_3uixn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bnngr"]
+atlas = ExtResource("1_13jd2")
+region = Rect2(0, 0, 13, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ebtek"]
+atlas = ExtResource("2_p45v3")
+region = Rect2(0, 0, 13, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u1klu"]
+atlas = ExtResource("3_x5qbj")
+region = Rect2(0, 0, 13, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_40kud"]
+atlas = ExtResource("4_jv4b2")
+region = Rect2(0, 0, 13, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s4r6t"]
+atlas = ExtResource("5_3uixn")
+region = Rect2(0, 0, 13, 14)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gf7s4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bnngr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ebtek")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u1klu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_40kud")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s4r6t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_40kud")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u1klu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ebtek")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="spike" type="TileMapLayer"]
+y_sort_enabled = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+y_sort_enabled = true
+sprite_frames = SubResource("SpriteFrames_gf7s4")
+frame_progress = 0.05379761

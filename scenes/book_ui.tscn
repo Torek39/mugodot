@@ -1,0 +1,142 @@
+[gd_scene load_steps=7 format=3 uid="uid://bxquckfj243l4"]
+
+[ext_resource type="Script" uid="uid://cnrbnd56nrlmx" path="res://scripts/book_ui.gd" id="1_5cpk5"]
+[ext_resource type="Texture2D" uid="uid://biocrgy8j13y5" path="res://Texture background/Book.png" id="2_p3lif"]
+[ext_resource type="Texture2D" uid="uid://dgu7kcibbow0i" path="res://book_open.png" id="3_5hkex"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_717ya"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k08ko"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_5cpk5"]
+diffuse_texture = ExtResource("2_p3lif")
+
+[node name="book_ui" type="CanvasLayer"]
+script = ExtResource("1_5cpk5")
+
+[node name="BookPanel" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 461.0
+offset_bottom = 361.0
+mouse_filter = 2
+
+[node name="BackgroundTexture" type="TextureRect" parent="BookPanel"]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 10.0
+offset_right = 604.0
+offset_bottom = 488.59772
+texture = ExtResource("3_5hkex")
+expand_mode = 1
+
+[node name="TitleLabel" type="Label" parent="BookPanel"]
+layout_mode = 0
+offset_left = 231.0
+offset_top = 35.0
+offset_right = 409.0
+offset_bottom = 94.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_font_sizes/font_size = 17
+text = "Операторы сравнения"
+
+[node name="PageLabel" type="Label" parent="BookPanel"]
+layout_mode = 0
+offset_left = 231.0
+offset_top = 82.0
+offset_right = 416.0
+offset_bottom = 302.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9411765)
+theme_override_font_sizes/font_size = 14
+text = "В программировании существует тип данных bool (булев).
+
+Он принимает только два значения:
+- True — истина
+- False — ложь"
+autowrap_mode = 2
+clip_text = true
+
+[node name="PrevButton" type="Button" parent="BookPanel"]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 295.0
+offset_right = 246.0
+offset_bottom = 318.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_717ya")
+text = "<"
+
+[node name="NextButton" type="Button" parent="BookPanel"]
+layout_mode = 0
+offset_left = 411.0
+offset_top = 295.0
+offset_right = 425.0
+offset_bottom = 318.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_717ya")
+text = ">"
+
+[node name="CloseButton" type="Button" parent="BookPanel"]
+layout_mode = 0
+offset_left = 434.0
+offset_top = 25.0
+offset_right = 454.0
+offset_bottom = 56.0
+rotation = 1.5707964
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_normal_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_k08ko")
+text = "⤫"
+
+[node name="PageCounter" type="Label" parent="BookPanel"]
+layout_mode = 0
+offset_left = 312.0
+offset_top = 295.0
+offset_right = 345.0
+offset_bottom = 318.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+text = "1 / 1"
+
+[node name="BookIcon" type="TextureButton" parent="."]
+z_index = 3
+layout_direction = 4
+offset_left = 574.0
+offset_top = 2.0
+offset_right = 638.0
+offset_bottom = 66.0
+size_flags_stretch_ratio = 0.0
+texture_normal = SubResource("CanvasTexture_5cpk5")
+ignore_texture_size = true
+stretch_mode = 5
+flip_v = true
+
+[node name="Notification" type="Label" parent="BookIcon"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 4.0
+offset_right = 25.0
+offset_bottom = 27.0
