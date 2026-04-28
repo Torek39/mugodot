@@ -1,23 +1,28 @@
 extends Node2D
+
 # ==========================
 # ЭКСПОРТ
 # ==========================
 @export var luke_path: NodePath = NodePath("../Luke")
+
 # ==========================
 # УЗЛЫ
 # ==========================
 @onready var popup := $Window
 @onready var code_edit := popup.get_node_or_null("Camera2D/TextEdit")
 const LOCKED_SIZE := Vector2(640, 360)
+
 # ==========================
 # КНОПКИ
 # ==========================
 var run_button: Button
 var reset_button: Button
+
 # ==========================
 # ПЕРЕМЕННЫЕ
 # ==========================
 var initial_code: String = ""
+
 # ==========================
 # ИНИЦИАЛИЗАЦИЯ
 # ==========================
@@ -46,6 +51,7 @@ func _connect_signals() -> void:
 # ОТКРЫТИЕ / ЗАКРЫТИЕ / СБРОС
 # ==========================
 func open_window() -> void:
+	AudioManager.play_sfx("window_open")
 	Global.input_blocked = true
 	popup.show()
 	if code_edit:
@@ -68,16 +74,17 @@ func _on_run_pressed() -> void:
 	if not code_edit:
 		return
 	if _check_code(code_edit.text):
+		AudioManager.play_sfx("success", -10.0)
 		_unlock_luke()
 		_on_close_pressed()
 	else:
+		AudioManager.play_sfx("error", -10.0)
 		code_edit.text += "\n# Люк не реагирует"
 
 func _check_code(text: String) -> bool:
 	var lower = text.to_lower()
 	var no_spaces = text.replace(" ", "").to_lower()
 	
-	# Защита шаблона — проверка переменных и структуры
 	if not "has_handle" in lower:
 		code_edit.text += "\n# Не меняй начальный код"
 		return false
@@ -91,18 +98,15 @@ func _check_code(text: String) -> bool:
 		code_edit.text += "\n# Не меняй начальный код"
 		return false
 	
-	# Проверка правильности — if с has_handle
 	var has_correct_if: bool = false
 	var has_correct_else: bool = false
 	
 	for line in text.split("\n"):
 		var s = line.strip_edges().to_lower().replace(" ", "")
 		
-		# Проверяем if has_handle: (с двоеточием)
 		if s.begins_with("ifhas_handle:") or s.begins_with("ifhas_handle"):
 			has_correct_if = true
 		
-		# Проверяем else: (с двоеточием)
 		if s.begins_with("else:") or s.begins_with("else"):
 			has_correct_else = true
 	
@@ -114,6 +118,7 @@ func _check_code(text: String) -> bool:
 		return false
 	
 	return true
+
 # ==========================
 # ОТКРЫТИЕ ЛЮКА
 # ==========================

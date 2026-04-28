@@ -7,13 +7,16 @@ func _ready():
 	_load_settings()
 
 func _on_master_changed(value: float):
-	AudioServer.set_bus_volume_db(0, linear_to_db(value / 100.0))
-	_save_settings()
+	var bus_idx = AudioServer.get_bus_index("Master")
+	if bus_idx >= 0:
+		AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value / 100.0))
+		_save_settings()
 
 func _on_music_changed(value: float):
-	# Проверка чтобы не вылетало если ты забыл создать шину в микшере
-	if AudioServer.get_bus_count() > 1:
-		AudioServer.set_bus_volume_db(1, linear_to_db(value / 100.0))
+	# Ищем шину по имени, чтобы не задеть SFX
+	var bus_idx = AudioServer.get_bus_index("Music")
+	if bus_idx >= 0:
+		AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value / 100.0))
 		_save_settings()
 
 func _save_settings():

@@ -6,6 +6,12 @@ extends Node
 @onready var music_player: AudioStreamPlayer = $MusicPlayer
 
 # ==========================
+# ПЕРЕМЕННЫЕ
+# ==========================
+var _is_paused_state := false
+var _current_scene_name := ""
+
+# ==========================
 # БИБЛИОТЕКА ЗВУКОВ
 # ==========================
 var sfx_library: Dictionary = {
@@ -15,7 +21,6 @@ var sfx_library: Dictionary = {
 	"error":        "res://assets/audio/sfx/error.mp3",
 	"success":      "res://assets/audio/sfx/success.mp3",
 	"notification": "res://assets/audio/sfx/notification.mp3",
-	# Объекты
 	"stone_move":   "res://assets/audio/sfx/stone_move.wav",
 	"door_open":    "res://assets/audio/sfx/door_open.mp3",
 	"luke":         "res://assets/audio/sfx/luke.wav",
@@ -27,16 +32,47 @@ var sfx_library: Dictionary = {
 	"explosion":    "res://assets/audio/sfx/explosion.wav",
 	"laser":        "res://assets/audio/sfx/laser.wav",
 	"glitch":       "res://assets/audio/sfx/glitch.wav",
-	"walk":         "res://assets/audio/sfx/walk.wav", # ход 
-	"fire":         "res://assets/audio/sfx/fire.wav",      #  4 сек
-	"barrier_gate": "res://assets/audio/sfx/barrier_gate.wav",  #  3 сек
+	"walk":         "res://assets/audio/sfx/walk.wav", 
+	"fire":         "res://assets/audio/sfx/fire.wav",      
+	"barrier_gate": "res://assets/audio/sfx/barrier_gate.wav",  
 }
+
+func _ready() -> void:
+	# Чтобы менеджер работал и во время паузы
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	music_player.bus = "Music"
+
+func _process(_delta: float) -> void:
+	# 1. Автоматическое приглушение музыки при любой паузе (меню, книга)
+	var current_pause = get_tree().paused
+	if current_pause != _is_paused_state:
+		_is_paused_state = current_pause
+		
+		var target_vol = -10.0 if _is_paused_state else 0.0
+		var tween = create_tween()
+		tween.tween_property(music_player, "volume_db", target_vol, 0.5)
+
+	# 2. Умное автопереключение музыки по названию сцены
+	var current_scene = get_tree().current_scene
+	if current_scene and current_scene.name != _current_scene_name:
+		_current_scene_name = current_scene.name
+		
+		# Если имя сцены содержит "menu" (любой регистр) — останавливаем музыку
+		if "menu" in _current_scene_name.to_lower():
+			stop_music()
+		else:
+			play_dungeon_music()
 
 # ==========================
 # ВОСПРОИЗВЕДЕНИЕ МУЗЫКИ
 # ==========================
+func play_dungeon_music() -> void:
+	play_music("res://assets/audio/music/dungeon_ambient.ogg")
+
 func play_music(path: String) -> void:
 	if music_player.stream and music_player.stream.resource_path == path:
+		if not music_player.playing:
+			music_player.play()
 		return
 	music_player.stream = load(path)
 	music_player.play()

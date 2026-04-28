@@ -14,6 +14,8 @@ func _ready():
 		confirm_dialog = ConfirmationDialog.new()
 		add_child(confirm_dialog)
 		confirm_dialog.dialog_text = "Перезаписать существующее сохранение?"
+		
+	if not confirm_dialog.confirmed.is_connected(_on_save_confirmed):
 		confirm_dialog.confirmed.connect(_on_save_confirmed)
 	
 	_update_slots()
@@ -69,19 +71,11 @@ func _save_to_slot(slot: int):
 	save.set_value("slot_" + str(slot), "teleport_activated", Global.teleport_activated)
 	save.set_value("slot_" + str(slot), "glitch_fixed", Global.glitch_fixed)
 	
-	
-	var book_ui = _find_book_ui()
-	if book_ui and book_ui.has_method("save_pages"):
-		book_ui.save_pages(slot, save)
-	
 	save.save("user://savegame.cfg")
 	_update_slots()
 
 func _find_player() -> Node:
 	return _find_node_by_name(get_tree().current_scene, "player")
-
-func _find_book_ui() -> Node:
-	return _find_node_by_name(get_tree().root, "BookUI")
 
 func _find_node_by_name(node: Node, node_name: String) -> Node:
 	if node.name == node_name:

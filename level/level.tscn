@@ -217,6 +217,7 @@ y_sort_enabled = true
 position = Vector2(128, 510)
 
 [node name="window_luke" parent="Node2D" instance=ExtResource("22_v4yay")]
+visible = false
 y_sort_enabled = true
 position = Vector2(-1, -1)
 luke_path = NodePath("../luke")

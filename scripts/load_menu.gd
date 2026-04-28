@@ -24,14 +24,12 @@ func _ready():
 
 func _on_slot_input(event: InputEvent, slot: int):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		print("Right click on slot ", slot)
 		delete_slot = slot
 		var dialog = get_node("DeleteConfirm")
 		if dialog:
 			dialog.popup_centered()
 
 func _on_delete_confirmed():
-	print("Delete confirmed for slot ", delete_slot)
 	if delete_slot == -1:
 		return
 	
@@ -52,6 +50,9 @@ func _on_slot(slot: int):
 	var scene = save.get_value("slot_" + str(slot), "scene", "")
 	if scene == "":
 		return
+		
+	# ВРУБАЕМ ТИШИНУ ПЕРЕД ЗАГРУЗКОЙ ФЛАГОВ
+	Global.is_loading = true
 		
 	Global.book_pages = save.get_value("slot_" + str(slot), "book_pages", [])
 	Global.door_open = save.get_value("slot_" + str(slot), "door_open", false)
@@ -77,30 +78,16 @@ func _on_slot(slot: int):
 	Global.teleport_activated = save.get_value("slot_" + str(slot), "teleport_activated", false)
 	Global.glitch_fixed = save.get_value("slot_" + str(slot), "glitch_fixed", false)
 	
+	# ВЫРУБАЕМ ТИШИНУ, ФЛАГИ ЗАГРУЖЕНЫ
+	Global.is_loading = false
 	
 	Global.player_spawn_x = save.get_value("slot_" + str(slot), "player_x", 0.0)
 	Global.player_spawn_y = save.get_value("slot_" + str(slot), "player_y", 0.0)
 	Global.should_load_position = true
 	
-	var book_ui = _find_book_ui()
-	if book_ui and book_ui.has_method("load_pages"):
-		book_ui.load_pages(slot, save)
-	
 	Global.input_blocked = false
 	get_tree().paused = false
 	get_tree().call_deferred("change_scene_to_file", scene)
-
-func _find_book_ui() -> Node:
-	return _find_node_by_name(get_tree().root, "BookUI")
-
-func _find_node_by_name(node: Node, node_name: String) -> Node:
-	if node.name == node_name:
-		return node
-	for child in node.get_children():
-		var result = _find_node_by_name(child, node_name)
-		if result:
-			return result
-	return null
 
 func _update_slots():
 	var save = ConfigFile.new()
